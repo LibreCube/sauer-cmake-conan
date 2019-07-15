@@ -1,0 +1,87 @@
+# Sauerbraten stuff which is non-free; helps to keep this repository fully open source
+packages/
+data/
+!data/*.cfg
+
+# Sauerbraten stuff which isn't helpful
+docs/
+bin/LICENSE*
+bin/README-SDL.txt
+bin/sauerbraten.map
+bin64/LICENSE*
+bin64/README-SDL.txt
+bin64/sauerbraten.map
+bin_unix/readme.txt
+
+# Sauerbraten binaries
+*.dll
+*.exe
+*.pdb
+linux_64_client
+linux_64_server
+linux_client
+linux_server
+
+# Sauerbraten non-CMake build systems
+src/Makefile
+*.vcxproj
+*.vcxproj.*
+*.cbp
+*.sln
+src/vcpp/*/*
+src/xcode/Frameworks/*/*
+*.xcodeproj
+
+# Sauerbraten non-Conan dependencies
+src/enet/*.h
+src/enet/*.c
+src/enet/include/
+src/enet/Makefile
+src/enet/LICENSE
+src/enet/README
+src/enet/ChangeLog
+src/enet/check_cflags.sh
+
+src/include/*.h
+
+
+## Generic .gitignore stuff
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+.idea/
+.vs/
+
+# CMake
+cmake-build-*/
