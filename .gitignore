@@ -1,7 +1,11 @@
 # Sauerbraten stuff which is non-free; helps to keep this repository fully open source
 packages/
-data/
-!data/*.cfg
+docs/dev/
+data/*.png
+data/*.jpeg
+data/*.jpg
+data/license.txt
+
 
 # Sauerbraten stuff which isn't helpful
 docs/
