@@ -1,0 +1,23 @@
+[requires]
+zlib/1.2.11@conan/stable
+enet/1.3.14@bincrafters/stable
+sdl2/2.0.9@bincrafters/stable
+sdl2_image/2.0.5@bincrafters/stable
+sdl2_mixer/2.0.4@bincrafters/stable
+
+[options]
+sdl2:sdl2main=False
+zlib:shared=True
+
+#enet:shared=True
+#sdl2:shared=True
+
+#sdl2_image:shared=True
+#sdl2_mixer:shared=True
+
+[imports]
+lib, *.dll -> ./bin64
+
+[generators]
+cmake
+

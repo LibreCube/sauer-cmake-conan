@@ -86,6 +86,7 @@ src/include/*.h
 
 .idea/
 .vs/
+build/
 
 # CMake
 cmake-build-*/
