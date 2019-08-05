@@ -106,13 +106,14 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_check(VERSION 1.17.0 REQUIRED) ## TODO: Doesn't work on some Windows configurations, upstream bug?
 
 # Install Bincrafters Conan repository if not already installed
-conan_add_remote(NAME bincrafters INDEX 2
+conan_add_remote(NAME bincrafters # INDEX 2
         URL https://api.bintray.com/conan/bincrafters/public-conan)
 
 # Execute `conan install ...` for the packages in conanfile.txt
 conan_cmake_run(CONANFILE conanfile.txt
-        BASIC_SETUP
-        BUILD outdated)
+        BASIC_SETUP # CMAKE_TARGETS
+        BUILD missing
+        )
 
 
 ################ Files ################
