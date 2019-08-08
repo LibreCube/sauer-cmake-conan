@@ -127,8 +127,14 @@ include_directories(src/shared src/engine src/fpsgame)
 
 add_definitions(-DCLIENT)
 
+if(WIN32)
+    set(GOSAUR_APPLICATION_TYPE "WIN32")
+else()
+    set()
+endif(GOSAUR_APPLICATION_TYPE "")
+
 # Add executable to build.
-add_executable(${PROJECT_NAME} WIN32
+add_executable(${PROJECT_NAME} ${GOSAUR_APPLICATION_TYPE}
         src/shared/crypto.cpp
         src/shared/cube2font.c
         src/shared/geom.cpp
@@ -192,7 +198,16 @@ add_executable(${PROJECT_NAME} WIN32
 
 # enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib;winmm.lib;dbghelp.lib;kernel32.lib;user32.lib
 
-target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} opengl32 ws2_32 dbghelp winmm kernel32 user32)
+set(GOSAUR_LINKING_PLATFORM_SPECIFIC "")
+
+if(WIN32)
+    list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC "opengl32" "ws2_32" "dbghelp" "winmm" "kernel32" "user32")
+else()
+    set(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC "GL")
+endif()
+
+target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC} )
+# target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} opengl32 ws2_32 dbghelp winmm kernel32 user32)
 # target_link_libraries(${PROJECT_NAME} ENET::ENET SDL2_IMAGE::SDL2_image SDL2_MIXER::SDL2_MIXER ZLIB::ZLIB SDL2::SDL2 opengl32)
 
 foreach(dir ${CONAN_LIBS})
