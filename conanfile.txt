@@ -6,9 +6,8 @@ sdl2_image/2.0.5@bincrafters/stable
 sdl2_mixer/2.0.4@bincrafters/stable
 
 [options]
+# zlib:shared=True
 sdl2:sdl2main=False
-zlib:shared=True
-
 #enet:shared=True
 #sdl2:shared=True
 

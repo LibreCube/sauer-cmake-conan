@@ -37,10 +37,10 @@ endif()
 # Defines Flags for Windows and Linux. #
 ########################################
 
-set(BUILD_C_FLAGS "-DCLIENT")
-set(BUILD_CXX_FLAGS "-DCLIENT")
+# set(BUILD_C_FLAGS "-DCLIENT")
+# set(BUILD_CXX_FLAGS "-DCLIENT")
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 
 if(MSVC)
    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /W3 /GL /Od /Zi")
@@ -48,7 +48,6 @@ if(MSVC)
    SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /LTCG")
 endif(MSVC)
 if(NOT MSVC)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
    endif()
@@ -106,7 +105,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_check(VERSION 1.17.0 REQUIRED) ## TODO: Doesn't work on some Windows configurations, upstream bug?
 
 # Install Bincrafters Conan repository if not already installed
-conan_add_remote(NAME bincrafters # INDEX 2
+conan_add_remote(NAME bincrafters INDEX 1
         URL https://api.bintray.com/conan/bincrafters/public-conan)
 
 # Execute `conan install ...` for the packages in conanfile.txt
@@ -129,7 +128,7 @@ include_directories(src/shared src/engine src/fpsgame)
 add_definitions(-DCLIENT)
 
 # Add executable to build.
-add_executable(${PROJECT_NAME}
+add_executable(${PROJECT_NAME} WIN32
         src/shared/crypto.cpp
         src/shared/cube2font.c
         src/shared/geom.cpp
@@ -193,7 +192,8 @@ add_executable(${PROJECT_NAME}
 
 # enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib;winmm.lib;dbghelp.lib;kernel32.lib;user32.lib
 
-target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} opengl32)
+target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} opengl32 ws2_32 dbghelp winmm kernel32 user32)
+# target_link_libraries(${PROJECT_NAME} ENET::ENET SDL2_IMAGE::SDL2_image SDL2_MIXER::SDL2_MIXER ZLIB::ZLIB SDL2::SDL2 opengl32)
 
 foreach(dir ${CONAN_LIBS})
     message(STATUS "lib='${dir}'")
