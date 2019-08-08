@@ -6,13 +6,13 @@ sdl2_image/2.0.5@bincrafters/stable
 sdl2_mixer/2.0.4@bincrafters/stable
 
 [options]
-# zlib:shared=True
+# zlib:shared=False
 sdl2:sdl2main=False
-#enet:shared=True
-#sdl2:shared=True
+# enet:shared=True
+# sdl2:shared=True
 
-#sdl2_image:shared=True
-#sdl2_mixer:shared=True
+# sdl2_image:shared=True
+# sdl2_mixer:shared=True
 
 [imports]
 lib, *.dll -> ./bin64
