@@ -13,6 +13,10 @@ Instead, I have added CMake and Conan support for it.
   * a C++17 compiler
 
 
+## Build
+Execute CMake configure, CMake build and CMake install.
+
+
 ## License
 Like the Sauerbraten source code, all files within this repository are ZLIB licensed.
 If some non-free file from Sauerbraten (e.g. any of the media files) 

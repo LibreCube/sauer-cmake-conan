@@ -207,4 +207,3 @@ if(WIN32)
 else()
     install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin_unix)
 endif()
-

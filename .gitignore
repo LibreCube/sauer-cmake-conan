@@ -92,6 +92,8 @@ build/
 
 # CMake
 cmake-build-*/
+CMakeCache.txt
+CMakeFiles/*
 
 # IDEs
 CMakeSettings.json
