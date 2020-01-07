@@ -16,6 +16,8 @@ bin64/LICENSE*
 bin64/README-SDL.txt
 bin64/sauerbraten.map
 bin_unix/readme.txt
+src/include/SDL_config.h.cmake
+src/include/SDL_config.h.in
 
 # Sauerbraten binaries
 *.dll
