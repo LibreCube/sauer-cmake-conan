@@ -318,19 +318,24 @@ namespace game
             }
         }
     }
+    COMMAND(respawn, "");
 
     // inputs
+
+    VARP(attackspawn, 0, 1, 1);
 
     void doattack(bool on)
     {
         if(!connected || intermission) return;
-        if((player1->attacking = on)) respawn();
+        if((player1->attacking = on) && attackspawn) respawn();
     }
+
+    VARP(jumpspawn, 0, 1, 1);
 
     bool canjump()
     {
         if(!connected || intermission) return false;
-        respawn();
+        if(jumpspawn) respawn();
         return player1->state!=CS_DEAD;
     }
 
@@ -700,7 +705,7 @@ namespace game
 
     const char *teamcolorname(fpsent *d, const char *alt)
     {
-        if(!teamcolortext || !m_teammode) return colorname(d, NULL, "", "", alt);
+        if(!teamcolortext || !m_teammode || d->state==CS_SPECTATOR) return colorname(d, NULL, "", "", alt);
         return colorname(d, NULL, isteam(d->team, player1->team) ? "\fs\f1" : "\fs\f3", "\fr", alt); 
     }
 
@@ -862,6 +867,42 @@ namespace game
         }
     }
 
+    VARP(gameclock, 0, 0, 1);
+    FVARP(gameclockscale, 1e-3f, 0.5f, 1e3f);
+    HVARP(gameclockcolour, 0, 0xFFFFFF, 0xFFFFFF);
+    VARP(gameclockalpha, 0, 255, 255);
+    HVARP(gameclocklowcolour, 0, 0xFFC040, 0xFFFFFF);
+    VARP(gameclockalign, -1, 1, 1);
+    FVARP(gameclockx, 0, 0.765f, 1);
+    FVARP(gameclocky, 0, 0.015f, 1);
+
+    void drawgameclock(int w, int h)
+    {
+        int secs = max(maplimit-lastmillis, 0)/1000, mins = secs/60;
+        secs %= 60;
+
+        defformatstring(buf, "%d:%02d", mins, secs);
+        int tw = 0, th = 0;
+        text_bounds(buf, tw, th);
+
+        vec2 offset = vec2(gameclockx, gameclocky).mul(vec2(w, h).div(gameclockscale));
+        if(gameclockalign == 1) offset.x -= tw;
+        else if(gameclockalign == 0) offset.x -= tw/2.0f;
+        offset.y -= th/2.0f;
+
+        pushhudmatrix();
+        hudmatrix.scale(gameclockscale, gameclockscale, 1);
+        flushhudmatrix();
+
+        int color = mins < 1 ? gameclocklowcolour : gameclockcolour;
+        draw_text(buf, int(offset.x), int(offset.y), (color>>16)&0xFF, (color>>8)&0xFF, color&0xFF, gameclockalpha);
+
+        pophudmatrix();
+    }
+
+    extern int hudscore;
+    extern void drawhudscore(int w, int h);
+
     void gameplayhud(int w, int h)
     {
         pushhudmatrix();
@@ -880,12 +921,7 @@ namespace game
             draw_text("SPECTATOR", w*1800/h - tw - pw, 1650 - th - fh);
             if(f) 
             {
-                int color = f->state!=CS_DEAD ? 0xFFFFFF : 0x606060;
-                if(f->privilege)
-                {
-                    color = f->privilege>=PRIV_ADMIN ? 0xFF8000 : 0x40FF80;
-                    if(f->state==CS_DEAD) color = (color>>1)&0x7F7F7F;
-                }
+                int color = statuscolor(f, 0xFFFFFF);
                 draw_text(colorname(f), w*1800/h - fw - pw, 1650 - fh, (color>>16)&0xFF, (color>>8)&0xFF, color&0xFF);
             }
         }
@@ -898,6 +934,12 @@ namespace game
         }
 
         pophudmatrix();
+
+        if(!m_edit)
+        {
+            if(gameclock) drawgameclock(w, h);
+            if(hudscore) drawhudscore(w, h);
+        }
     }
 
     int clipconsole(int w, int h)
