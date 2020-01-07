@@ -1,44 +1,16 @@
 cmake_minimum_required(VERSION 3.10.0 FATAL_ERROR)
-set(PROJECT_NAME sauerbraten)
-
-################### Variables. ####################
-
-# Output Variables
-set(OUTPUT_DEBUG Debug/bin)
-set(OUTPUT_RELEASE Release/bin)
-
-############## CMake Project ################
-#        The main options of project        #
-#############################################
-
-project(${PROJECT_NAME} CXX)
+project(sauerbraten CXX)
 
 # Define Release by default.
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
   message(STATUS "Build type not specified: Use Release by default.")
-endif(NOT CMAKE_BUILD_TYPE)
-
-############## Artefacts Output #################
-# Defines outputs , depending Debug or Release. #
-#################################################
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DEBUG}")
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DEBUG}")
-  set(CMAKE_EXECUTABLE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/${OUTPUT_DEBUG}")
-else()
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_REL}")
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_REL}")
-  set(CMAKE_EXECUTABLE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_REL}")
 endif()
+
 
 ################# Flags ################
 # Defines Flags for Windows and Linux. #
 ########################################
-
-# set(BUILD_C_FLAGS "-DCLIENT")
-# set(BUILD_CXX_FLAGS "-DCLIENT")
 
 set (CMAKE_CXX_STANDARD 17)
 
@@ -102,7 +74,7 @@ endif()
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 # Make sure we have a recent Conan version
-conan_check(VERSION 1.21.0 REQUIRED) ## TODO: Doesn't work on some Windows configurations, upstream bug?
+conan_check(VERSION 1.21.0 REQUIRED)
 
 # Install Bincrafters Conan repository if not already installed
 conan_add_remote(NAME bincrafters INDEX 1
@@ -119,16 +91,28 @@ conan_cmake_run(CONANFILE conanfile.txt
 
 include_directories(src/shared src/engine src/fpsgame)
 
-add_definitions(-DCLIENT)
-
 if(WIN32)
     set(GOSAUR_APPLICATION_TYPE "WIN32")
 else()
     set(GOSAUR_APPLICATION_TYPE "")
 endif()
 
-# Add executable to build.
-add_executable(${PROJECT_NAME} ${GOSAUR_APPLICATION_TYPE}
+
+add_executable(sauer_server ${GOSAUR_APPLICATION_TYPE}
+        src/shared/crypto.cpp
+        src/shared/stream.cpp
+        src/shared/tools.cpp
+        src/engine/command.cpp
+        src/engine/server.cpp
+        src/engine/worldio.cpp
+        src/fpsgame/entities.cpp
+        src/fpsgame/server.cpp
+)
+
+target_compile_definitions(sauer_server PUBLIC STANDALONE)
+
+
+add_executable(${CMAKE_PROJECT_NAME} ${GOSAUR_APPLICATION_TYPE}
         src/shared/crypto.cpp
         src/shared/cube2font.c
         src/shared/geom.cpp
@@ -190,33 +174,38 @@ add_executable(${PROJECT_NAME} ${GOSAUR_APPLICATION_TYPE}
         src/fpsgame/weapon.cpp
 )
 
+target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC CLIENT)
+
 # enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib;winmm.lib;dbghelp.lib;kernel32.lib;user32.lib
 
-set(GOSAUR_LINKING_PLATFORM_SPECIFIC "")
 
 if(WIN32)
-    list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC "opengl32" "ws2_32" "dbghelp" "winmm" "kernel32" "user32")
+    list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT "opengl32" "ws2_32" "dbghelp" "winmm" "kernel32" "user32")
+    list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER "ws2_32" "winmm")
+    list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC_MASTER "ws2_32" "winmm")
 else()
-    list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC "GL")
+    list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT "GL")
+    # Server doesn't need more libs linked on UNIX
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC} )
-# target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} opengl32 ws2_32 dbghelp winmm kernel32 user32)
-# target_link_libraries(${PROJECT_NAME} ENET::ENET SDL2_IMAGE::SDL2_image SDL2_MIXER::SDL2_MIXER ZLIB::ZLIB SDL2::SDL2 opengl32)
+target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT} )
+target_link_libraries(sauer_server ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER} )
+# target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} opengl32 ws2_32 dbghelp winmm kernel32 user32)
+# target_link_libraries(${CMAKE_PROJECT_NAME} ENET::ENET SDL2_IMAGE::SDL2_image SDL2_MIXER::SDL2_MIXER ZLIB::ZLIB SDL2::SDL2 opengl32)
 
 foreach(dir ${CONAN_LIBS})
     message(STATUS "lib='${dir}'")
 endforeach()
 
 
-### Install targets ###
+################ Install targets ################
 if(WIN32)
    if(BUILD_TARGET_X86)
-        install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
+        install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
    else()
-        install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin64)
+        install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin64)
    endif()
 else()
-    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin_unix)
+    install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin_unix)
 endif()
 
