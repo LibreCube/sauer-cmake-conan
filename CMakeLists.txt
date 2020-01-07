@@ -100,6 +100,18 @@ else()
 endif()
 
 
+add_executable(sauer_master
+        src/shared/crypto.cpp
+        src/shared/stream.cpp
+        src/shared/tools.cpp
+        src/engine/command.cpp
+        src/engine/master.cpp
+        ${GOSAUR_ADDITIONAL_SOURCE_FILES}
+)
+
+target_compile_definitions(sauer_master PUBLIC STANDALONE)
+
+
 add_executable(sauer_server ${GOSAUR_APPLICATION_TYPE}
         src/shared/crypto.cpp
         src/shared/stream.cpp
@@ -192,8 +204,9 @@ else()
     # Server doesn't need more libs linked on UNIX
 endif()
 
-target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT} )
-target_link_libraries(sauer_server ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER} )
+target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
+target_link_libraries(sauer_server ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER})
+target_link_libraries(sauer_master ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_MASTER})
 # target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} opengl32 ws2_32 dbghelp winmm kernel32 user32)
 # target_link_libraries(${CMAKE_PROJECT_NAME} ENET::ENET SDL2_IMAGE::SDL2_image SDL2_MIXER::SDL2_MIXER ZLIB::ZLIB SDL2::SDL2 opengl32)
 
@@ -204,10 +217,10 @@ message(STATUS "CONAN_LIBS='${CONAN_LIBS}'")
 ################ Install targets ################
 if(WIN32)
    if(BUILD_TARGET_X86)
-        install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
+        install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
    else()
-        install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin64)
+        install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin64)
    endif()
 else()
-    install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin_unix)
+    install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin_unix)
 endif()

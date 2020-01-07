@@ -18,6 +18,7 @@ bin64/sauerbraten.map
 bin_unix/readme.txt
 src/include/SDL_config.h.cmake
 src/include/SDL_config.h.in
+master.log
 
 # Sauerbraten binaries
 *.dll
