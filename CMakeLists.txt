@@ -93,8 +93,10 @@ include_directories(src/shared src/engine src/fpsgame)
 
 if(WIN32)
     set(GOSAUR_APPLICATION_TYPE "WIN32")
+    set(GOSAUR_ADDITIONAL_SOURCE_FILES "src/vcpp/sauerbraten.rc")
 else()
     set(GOSAUR_APPLICATION_TYPE "")
+    set(GOSAUR_ADDITIONAL_SOURCE_FILES "")
 endif()
 
 
@@ -107,6 +109,7 @@ add_executable(sauer_server ${GOSAUR_APPLICATION_TYPE}
         src/engine/worldio.cpp
         src/fpsgame/entities.cpp
         src/fpsgame/server.cpp
+        ${GOSAUR_ADDITIONAL_SOURCE_FILES}
 )
 
 target_compile_definitions(sauer_server PUBLIC STANDALONE)
@@ -172,6 +175,7 @@ add_executable(${CMAKE_PROJECT_NAME} ${GOSAUR_APPLICATION_TYPE}
         src/fpsgame/server.cpp
         src/fpsgame/waypoint.cpp
         src/fpsgame/weapon.cpp
+        ${GOSAUR_ADDITIONAL_SOURCE_FILES}
 )
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC CLIENT)

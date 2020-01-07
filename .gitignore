@@ -90,10 +90,19 @@ src/include/*.h
 .vs/
 build/
 
-# CMake
+# CMake/Conan
 cmake-build-*/
 CMakeCache.txt
 CMakeFiles/*
+cmake_install.cmake
+build.ninja
+conan.cmake
+conan.lock
+conanbuildinfo.cmake
+conanbuildinfo.txt
+conaninfo.txt
+graph_info.json
+rules.ninja
 
 # IDEs
 CMakeSettings.json
