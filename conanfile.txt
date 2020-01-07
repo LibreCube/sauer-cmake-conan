@@ -7,7 +7,7 @@ sdl2_mixer/2.0.4@bincrafters/stable
 
 [options]
 sdl2:sdl2main=False
-sdl2_image:jpg=libjpeg
+# sdl2_image:jpg=libjpeg
 
 [generators]
 cmake
