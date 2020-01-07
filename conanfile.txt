@@ -9,8 +9,5 @@ sdl2_mixer/2.0.4@bincrafters/stable
 sdl2:sdl2main=False
 sdl2_image:jpg=libjpeg
 
-[imports]
-lib, *.dll -> ./bin64
-
 [generators]
 cmake
