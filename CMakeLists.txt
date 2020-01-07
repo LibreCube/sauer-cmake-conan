@@ -26,7 +26,7 @@ endif(NOT CMAKE_BUILD_TYPE)
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DEBUG}")
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DEBUG}")
-  set(CMAKE_EXECUTABLE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DEBUG}")
+  set(CMAKE_EXECUTABLE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/${OUTPUT_DEBUG}")
 else()
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_REL}")
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_REL}")
@@ -119,12 +119,6 @@ conan_cmake_run(CONANFILE conanfile.txt
 
 include_directories(src/shared src/engine src/fpsgame)
 
-# TODO: remove
-# get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
-#foreach(dir ${dirs})
-#    message(STATUS "dir='${dir}'")
-#endforeach()
-
 add_definitions(-DCLIENT)
 
 if(WIN32)
@@ -213,3 +207,16 @@ target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SP
 foreach(dir ${CONAN_LIBS})
     message(STATUS "lib='${dir}'")
 endforeach()
+
+
+### Install targets ###
+if(WIN32)
+   if(BUILD_TARGET_X86)
+        install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
+   else()
+        install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin64)
+   endif()
+else()
+    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin_unix)
+endif()
+
