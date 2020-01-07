@@ -32,7 +32,8 @@
     #include <dbghelp.h>
     #include <intrin.h>
   #endif
-  #define ZLIB_DLL
+  // GOSAUR-EDIT: Use static linked ZLIB instead dynamically linked
+  // #define ZLIB_DLL
 #endif
 
 #ifndef STANDALONE
