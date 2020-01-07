@@ -90,3 +90,7 @@ build/
 
 # CMake
 cmake-build-*/
+
+# IDEs
+CMakeSettings.json
+

@@ -102,7 +102,7 @@ endif()
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 # Make sure we have a recent Conan version
-conan_check(VERSION 1.17.0 REQUIRED) ## TODO: Doesn't work on some Windows configurations, upstream bug?
+conan_check(VERSION 1.21.0 REQUIRED) ## TODO: Doesn't work on some Windows configurations, upstream bug?
 
 # Install Bincrafters Conan repository if not already installed
 conan_add_remote(NAME bincrafters INDEX 1
@@ -130,8 +130,8 @@ add_definitions(-DCLIENT)
 if(WIN32)
     set(GOSAUR_APPLICATION_TYPE "WIN32")
 else()
-    set()
-endif(GOSAUR_APPLICATION_TYPE "")
+    set(GOSAUR_APPLICATION_TYPE "")
+endif()
 
 # Add executable to build.
 add_executable(${PROJECT_NAME} ${GOSAUR_APPLICATION_TYPE}
@@ -203,7 +203,7 @@ set(GOSAUR_LINKING_PLATFORM_SPECIFIC "")
 if(WIN32)
     list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC "opengl32" "ws2_32" "dbghelp" "winmm" "kernel32" "user32")
 else()
-    set(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC "GL")
+    list(APPEND GOSAUR_LINKING_PLATFORM_SPECIFIC "GL")
 endif()
 
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC} )
