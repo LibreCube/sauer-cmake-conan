@@ -84,6 +84,7 @@ conan_add_remote(NAME bincrafters INDEX 1
 conan_cmake_run(CONANFILE conanfile.txt
         BASIC_SETUP # CMAKE_TARGETS
         BUILD outdated
+        UPDATE
         )
 
 
