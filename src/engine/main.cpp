@@ -113,9 +113,9 @@ void writeinitcfg()
     f->printf("scr_h %d\n", scr_h);
     f->printf("depthbits %d\n", depthbits);
     f->printf("fsaa %d\n", fsaa);
-    extern int sound, soundchans, soundfreq, soundbufferlen;
+    extern int usesound, soundchans, soundfreq, soundbufferlen;
     extern char *audiodriver;
-    f->printf("sound %d\n", sound);
+    f->printf("usesound %d\n", usesound);
     f->printf("soundchans %d\n", soundchans);
     f->printf("soundfreq %d\n", soundfreq);
     f->printf("soundbufferlen %d\n", soundbufferlen);
@@ -567,7 +567,8 @@ VARFNP(gamma, reqgamma, 30, 100, 300,
 
 void restoregamma()
 {       
-    if(initing || curgamma == 100) return;
+    if(initing || reqgamma == 100) return;
+    curgamma = reqgamma;
     setgamma(curgamma);
 }
 
