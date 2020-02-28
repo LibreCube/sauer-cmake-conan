@@ -216,12 +216,14 @@ message(STATUS "CONAN_LIBS='${CONAN_LIBS}'")
 
 
 ################ Install targets ################
+set(GOSAUR_TARGET_DIR "${PROJECT_SOURCE_DIR}/bin_unix")
+
 if(WIN32)
-   if(BUILD_TARGET_X86)
-        install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
-   else()
-        install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin64)
-   endif()
-else()
-    install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin_unix)
+    if(BUILD_TARGET_X86)
+        set(GOSAUR_TARGET_DIR "${PROJECT_SOURCE_DIR}/bin")
+    else()
+        set(GOSAUR_TARGET_DIR "${PROJECT_SOURCE_DIR}/bin64")
+    endif()
 endif()
+
+install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${GOSAUR_TARGET_DIR})
