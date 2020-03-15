@@ -21,10 +21,12 @@ jobs:
         run: |
           pip install conan cmake
           conan user
+          conan --version
+          cmake --version
       - name: Build
         run: |
           conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
           conan install . --build outdated
           cmake -DCMAKE_BUILD_TYPE="Release" -G "${{ matrix.config.generator }}" -A "x64" .
-          cmake --target install --build .
+          cmake --build . --target install
 
