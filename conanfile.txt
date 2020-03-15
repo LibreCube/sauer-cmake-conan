@@ -11,3 +11,7 @@ sdl2:sdl2main=False
 
 [generators]
 cmake
+
+[imports]
+bin, glib-2.0-0.dll -> ./bin
+bin, glib-2.0-0.dll -> ./bin64
