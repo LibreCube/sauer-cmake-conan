@@ -23,6 +23,7 @@ jobs:
         if: matrix.config.name == 'Windows'
       - name: Build
         run: |
+          conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
           conan install . --build outdated
           cmake -DCMAKE_BUILD_TYPE=Release -G "${{ matrix.config.generator }}" -A "Win64" .
           cmake --target install --build .
