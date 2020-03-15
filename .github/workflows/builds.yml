@@ -27,6 +27,8 @@ jobs:
         run: |
           conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
           conan install . --build outdated
+          echo "CMake configuration"
           cmake -DCMAKE_BUILD_TYPE="Release" -G "${{ matrix.config.generator }}" -A "x64" .
+          echo "CMake install"
           cmake --build . --target install
 
