@@ -1,0 +1,26 @@
+on: [push, pull_request]
+
+jobs:
+  builds:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { name: "Windows", os: "windows-2019", generator: "Visual Studio 16 2019" }
+    name: ${{ matrix.config.name }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.8"
+      - name: Install Conan
+        run: |
+          pip install conan cmake
+          conan user
+      - name: Build
+        run: |
+          conan install . --build outdated
+          cmake -DCMAKE_BUILD_TYPE=Release -G "${{ matrix.config.generator }}" -A "Win64" .
+          cmake --target install --build .
+
