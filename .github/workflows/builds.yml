@@ -32,4 +32,8 @@ jobs:
           echo "CMake install"
           cmake --build . --target install
           cpack
+      - name: Uplaod artifact
+        uses: actions/upload-artifact@v2-preview
+        with:
+          path: "sauerbraten*.zip"
 
