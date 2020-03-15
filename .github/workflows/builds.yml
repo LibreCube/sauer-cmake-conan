@@ -31,4 +31,5 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE="Release" -G "${{ matrix.config.generator }}" -A "x64" .
           echo "CMake install"
           cmake --build . --target install
+          cpack
 
