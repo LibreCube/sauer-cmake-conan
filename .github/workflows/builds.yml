@@ -1,0 +1,34 @@
+on: [push, pull_request]
+
+jobs:
+  builds:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { name: "Windows", os: "windows-2019", generator: "Visual Studio 16 2019" }
+    name: ${{ matrix.config.name }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.8"
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.0
+        if: matrix.config.name == 'Windows'
+      - name: Install Conan
+        run: |
+          pip install conan cmake
+          conan user
+          conan --version
+          cmake --version
+      - name: Build
+        run: |
+          conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+          conan install . --build outdated
+          echo "CMake configuration"
+          cmake -DCMAKE_BUILD_TYPE="Release" -G "${{ matrix.config.generator }}" -A "x64" .
+          echo "CMake install"
+          cmake --build . --target install
+
