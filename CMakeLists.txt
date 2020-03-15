@@ -227,3 +227,7 @@ if(WIN32)
 endif()
 
 install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${GOSAUR_TARGET_DIR})
+
+set(CPACK_PACKAGE_NAME "Sauerbraten")
+set(CPACK_GENERATOR "ZIP")
+include(CPack)
