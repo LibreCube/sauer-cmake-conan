@@ -14,13 +14,13 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: "3.8"
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.0
-        if: matrix.config.name == 'Windows'
       - name: Install Conan
         run: |
           pip install conan cmake
           conan user
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.0
+        if: matrix.config.name == 'Windows'
       - name: Build
         run: |
           conan install . --build outdated
