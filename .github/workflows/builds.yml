@@ -32,8 +32,10 @@ jobs:
           echo "CMake install"
           cmake --build . --target install
           cpack
-      - id: getfilename
+      - name: Get artifcact name
+        id: getfilename
         run: echo "::set-output name=file::$(ls sauerbraten*.zip)"
+        shell: bash
       - name: Uplaod artifact
         uses: actions/upload-artifact@v2-preview
         with:
