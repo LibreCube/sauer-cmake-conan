@@ -91,7 +91,7 @@ src/include/*.h
 .vs/
 build/
 
-# CMake/Conan
+# CMake/CPack/Conan
 cmake-build-*/
 CMakeCache.txt
 CMakeFiles/*
@@ -105,7 +105,17 @@ conan_imports_manifest.txt
 conaninfo.txt
 graph_info.json
 rules.ninja
+_CPack_Packages/
+artifact/
+CPackConfig.cmake
+CPackSourceConfig.cmake 
+install_manifest.txt 
+sauer_master.dir/
+sauer_server.dir/
+sauerbraten.dir/
+x64/Debug/
+*.exp
+*.zip
 
 # IDEs
 CMakeSettings.json
-
