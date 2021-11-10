@@ -24,10 +24,10 @@ jobs:
           conan --version
           cmake --version
       - name: Build
+        # conan install . --build outdated # before echo "CMake configuration"
         run: |
           conan config set general.revisions_enabled=True
           conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
-          conan install . --build outdated
           echo "CMake configuration"
           cmake -DCMAKE_BUILD_TYPE="Release" -G "${{ matrix.config.generator }}" -A "x64" .
           echo "CMake install"
