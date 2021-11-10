@@ -25,6 +25,7 @@ jobs:
           cmake --version
       - name: Build
         run: |
+          conan config set general.revisions_enabled=True
           conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
           conan install . --build outdated
           echo "CMake configuration"
