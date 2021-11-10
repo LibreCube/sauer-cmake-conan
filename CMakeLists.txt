@@ -78,7 +78,7 @@ conan_check(VERSION 1.21.0 REQUIRED)
 
 # Install Bincrafters Conan repository if not already installed
 conan_add_remote(NAME bincrafters INDEX 1
-        URL https://api.bintray.com/conan/bincrafters/public-conan)
+        URL https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
 
 # Execute `conan install ...` for the packages in conanfile.txt
 conan_cmake_run(CONANFILE conanfile.txt
