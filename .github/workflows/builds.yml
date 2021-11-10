@@ -25,7 +25,7 @@ jobs:
           cmake --version
       - name: Build
         run: |
-          conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+          conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
           conan install . --build outdated
           echo "CMake configuration"
           cmake -DCMAKE_BUILD_TYPE="Release" -G "${{ matrix.config.generator }}" -A "x64" .
@@ -39,4 +39,3 @@ jobs:
         with:
           name: ${{ env.ARTIFACT_FILE }}
           path: ${{ env.ARTIFACT_FILE }}
-
