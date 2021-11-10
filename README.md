@@ -8,16 +8,19 @@ Instead, I have added CMake and Conan support for it.
 
 
 ## Requirements 
-  * [CMake](https://cmake.org) >= 3.10.0
-  * [Conan](https://conan.io) >= 1.21.0
+
+  * [CMake](https://cmake.org) >= 3.16.0
+  * [Conan](https://conan.io) >= 1.33.0
   * a C++17 compiler
 
 
 ## Build
+
 Execute CMake configure, CMake build and CMake install.
 
 
 ## License
+
 Like the Sauerbraten source code, all files within this repository are ZLIB licensed.
 If some non-free file from Sauerbraten (e.g. any of the media files) 
 slid through my check this is considered a bug, 
