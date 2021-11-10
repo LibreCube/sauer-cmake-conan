@@ -74,7 +74,7 @@ endif()
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 # Make sure we have a recent Conan version
-conan_check(VERSION 1.21.0 REQUIRED)
+conan_check(VERSION 1.33.0 REQUIRED)
 
 # Install Bincrafters Conan repository if not already installed
 conan_add_remote(NAME bincrafters INDEX 1
