@@ -36,7 +36,7 @@ jobs:
           echo "::set-env name=ARTIFACT_FILE::$(ls sauerbraten*.zip)"
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: ${{ env.ARTIFACT_FILE }}
           path: ${{ env.ARTIFACT_FILE }}
