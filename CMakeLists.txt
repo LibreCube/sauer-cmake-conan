@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.15.0 FATAL_ERROR)
 project(sauerbraten CXX)
 
-# Define Release by default.
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
   message(STATUS "Build type not specified: Use Release by default.")
@@ -83,11 +85,28 @@ conan_check(VERSION 1.33.0 REQUIRED)
 conan_add_remote(NAME bincrafters INDEX 1
         URL https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
 
+# Temporary workaround until glib can be linked statically
+set (CONANIMPORTS
+        "bin, glib-2.0-0.dll -> ./bin"
+        "bin, glib-2.0-0.dll -> ./bin64"
+        )
+
+conan_cmake_configure(REQUIRES fmt/6.1.2
+                      GENERATORS cmake_find_package)
+
+conan_cmake_autodetect(settings)
+
+conan_cmake_install(PATH_OR_REFERENCE .
+                    BUILD missing
+                    REMOTE conancenter
+                    SETTINGS ${settings})
+
 # Execute `conan install ...` for the packages in conanfile.txt
 conan_cmake_run(CONANFILE conanfile.txt
         BASIC_SETUP # CMAKE_TARGETS
-        BUILD outdated
-        UPDATE
+        IMPORTS ${CONANIMPORTS}
+        BUILD MISSING
+        # UPDATE
         )
 
 
@@ -208,11 +227,19 @@ else()
     # Server doesn't need more libs linked on UNIX
 endif()
 
-target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
+
+find_package(ZLIB REQUIRED CONFIG)
+find_package(enet REQUIRED CONFIG)
+find_package(SDL2 REQUIRED CONFIG)
+find_package(SDL2_image REQUIRED CONFIG)
+find_package(SDL2_mixer REQUIRED CONFIG)
+
+# target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
 target_link_libraries(sauer_server ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER})
 target_link_libraries(sauer_master ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_MASTER})
 # target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} opengl32 ws2_32 dbghelp winmm kernel32 user32)
-# target_link_libraries(${CMAKE_PROJECT_NAME} ENET::ENET SDL2_IMAGE::SDL2_image SDL2_MIXER::SDL2_MIXER ZLIB::ZLIB SDL2::SDL2 opengl32)
+# target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_IMAGE::SDL2_image SDL2_MIXER::SDL2_MIXER ZLIB::ZLIB SDL2::SDL2 opengl32)
+target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_image::SDL2_image sdl2_mixer::sdl2_mixer ZLIB::ZLIB SDL2::SDL2 opengl32)
 
     
 message(STATUS "CONAN_LIBS='${CONAN_LIBS}'")
@@ -233,4 +260,31 @@ install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINAT
 
 set(CPACK_PACKAGE_NAME "sauerbraten")
 set(CPACK_GENERATOR "ZIP")
+
+option(CREATE_PACKAGE "Enable this to use CPack" OFF)
+if(CREATE_PACKAGE)
+    message("GOOD!")
+    message("Destination ${PROJECT_SOURCE_DIR}")
+    install(DIRECTORY
+                ${CMAKE_SOURCE_DIR}/bin
+                ${CMAKE_SOURCE_DIR}/bin_unix
+                ${CMAKE_SOURCE_DIR}/bin64
+                ${CMAKE_SOURCE_DIR}/data
+                ${CMAKE_SOURCE_DIR}/src
+            DESTINATION ${CMAKE_SOURCE_DIR}/artifact)
+
+    install(FILES
+                ${CMAKE_SOURCE_DIR}/sauerbraten.bat
+                ${CMAKE_SOURCE_DIR}/sauerbraten_unix
+                ${CMAKE_SOURCE_DIR}/server-init.cfg
+                ${CMAKE_SOURCE_DIR}/server.bat
+                ${CMAKE_SOURCE_DIR}/CMakeLists.txt
+                ${CMAKE_SOURCE_DIR}/conanfile.txt
+                ${CMAKE_SOURCE_DIR}/.gitignore
+            DESTINATION ${CMAKE_SOURCE_DIR}/artifact)
+
+endif()
+
+#set(CPACK_COMPONENTS_ALL ResourcesPackages)
+
 include(CPack)

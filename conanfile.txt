@@ -11,6 +11,7 @@ sdl2:sdl2main=False
 
 [generators]
 cmake
+cmake_find_package_multi
 
 [imports]
 bin, glib-2.0-0.dll -> ./bin
