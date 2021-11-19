@@ -69,9 +69,10 @@ message(STATUS "Set release mode flags (${BUILD_RELEASE_FLAGS}) (Current mode: $
 
 # --- Conan --- #
 # Download Conan
+set(CONAN_CMAKE_WRAPPER_VERSION "0.17.0")
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-    message(STATUS "Downloading conan.cmake v0.16.1 from https://github.com/conan-io/cmake-conan")
-    file(DOWNLOAD "https://github.com/conan-io/cmake-conan/raw/f166ec12c615da39365b4a7f63958f7ed352a620/conan.cmake"
+    message(STATUS "Downloading conan.cmake v${CONAN_CMAKE_WRAPPER_VERSION} from https://github.com/conan-io/cmake-conan")
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/${CONAN_CMAKE_WRAPPER_VERSION}/conan.cmake"
             "${CMAKE_BINARY_DIR}/conan.cmake")
 endif()
 
