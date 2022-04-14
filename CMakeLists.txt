@@ -99,16 +99,15 @@ conan_cmake_autodetect(settings)
 
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
-                    REMOTE conancenter
                     SETTINGS ${settings})
 
 # Execute `conan install ...` for the packages in conanfile.txt
-conan_cmake_run(CONANFILE conanfile.txt
-        BASIC_SETUP # CMAKE_TARGETS
-        IMPORTS ${CONANIMPORTS}
-        BUILD MISSING
+# conan_cmake_run(CONANFILE conanfile.txt
+#        BASIC_SETUP # CMAKE_TARGETS
+#        IMPORTS ${CONANIMPORTS}
+        ## BUILD MISSING
         # UPDATE
-        )
+#        )
 
 
 ################ Files ################
