@@ -12,8 +12,8 @@ endif()
 
 ################# Flags ################
 
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_STANDARD 17)
+# set(CMAKE_CXX_STANDARD_REQUIRED True)
+# set(CMAKE_CXX_STANDARD 17)
 
 if(MSVC)
    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /W3 /GL /Od /Zi")
@@ -98,8 +98,11 @@ set (CONANIMPORTS
 conan_cmake_autodetect(settings)
 
 conan_cmake_install(PATH_OR_REFERENCE .
-                    BUILD missing
+                    BUILD outdated
                     SETTINGS ${settings})
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 
 # Execute `conan install ...` for the packages in conanfile.txt
 # conan_cmake_run(CONANFILE conanfile.txt
@@ -109,6 +112,12 @@ conan_cmake_install(PATH_OR_REFERENCE .
         # UPDATE
 #        )
 
+
+find_package(ZLIB REQUIRED CONFIG)
+find_package(enet REQUIRED CONFIG)
+find_package(SDL2 REQUIRED CONFIG)
+find_package(SDL2_image REQUIRED CONFIG)
+find_package(SDL2_mixer REQUIRED CONFIG)
 
 ################ Files ################
 
@@ -228,12 +237,6 @@ else()
 endif()
 
 
-find_package(ZLIB REQUIRED CONFIG)
-find_package(enet REQUIRED CONFIG)
-find_package(SDL2 REQUIRED CONFIG)
-find_package(SDL2_image REQUIRED CONFIG)
-find_package(SDL2_mixer REQUIRED CONFIG)
-
 # target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
 target_link_libraries(sauer_server ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER})
 target_link_libraries(sauer_master ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_MASTER})
@@ -243,6 +246,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_image::SDL2_image sd
 
     
 message(STATUS "CONAN_LIBS='${CONAN_LIBS}'")
+message(STATUS "enet_INCLUDE_DIRS_RELEASE='${enet_INCLUDE_DIRS_RELEASE}'")
 
 
 ################ Install targets ################

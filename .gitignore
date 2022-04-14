@@ -98,6 +98,7 @@ CMakeFiles/*
 cmake_install.cmake
 build.ninja
 conan.cmake
+*.cmake
 conan.lock
 conanbuildinfo.cmake
 conanbuildinfo.txt
