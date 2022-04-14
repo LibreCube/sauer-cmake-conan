@@ -10,8 +10,8 @@ jobs:
           - { name: "Windows", os: "windows-2019", generator: "Visual Studio 16 2019" }
     name: ${{ matrix.config.name }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
           python-version: "3.9"
       - name: Add msbuild to PATH
@@ -36,7 +36,7 @@ jobs:
           echo "::set-env name=ARTIFACT_FILE::$(ls sauerbraten*.zip)"
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.ARTIFACT_FILE }}
           path: ${{ env.ARTIFACT_FILE }}

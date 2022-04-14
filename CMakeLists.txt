@@ -69,7 +69,7 @@ message(STATUS "Set release mode flags (${BUILD_RELEASE_FLAGS}) (Current mode: $
 
 # --- Conan --- #
 # Download Conan
-set(CONAN_CMAKE_WRAPPER_VERSION "0.17.0")
+set(CONAN_CMAKE_WRAPPER_VERSION "0.18.1")
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(STATUS "Downloading conan.cmake v${CONAN_CMAKE_WRAPPER_VERSION} from https://github.com/conan-io/cmake-conan")
     file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/${CONAN_CMAKE_WRAPPER_VERSION}/conan.cmake"
@@ -80,7 +80,7 @@ endif()
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 # Make sure we have a recent Conan version
-conan_check(VERSION 1.33.0 REQUIRED)
+conan_check(VERSION 1.47.0 REQUIRED)
 
 # Install Bincrafters Conan repository if not already installed
 conan_add_remote(NAME bincrafters INDEX 1
@@ -92,8 +92,8 @@ set (CONANIMPORTS
         "bin, glib-2.0-0.dll -> ./bin64"
         )
 
-conan_cmake_configure(REQUIRES fmt/6.1.2
-                      GENERATORS cmake_find_package)
+# conan_cmake_configure(REQUIRES fmt/6.1.2
+#                      GENERATORS cmake_find_package)
 
 conan_cmake_autodetect(settings)
 

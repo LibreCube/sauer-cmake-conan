@@ -7,10 +7,10 @@ with a small exception for the Sauerbraten logo.
 Instead, I have added CMake and Conan support for it.
 
 
-## Requirements 
+## Requirements
 
   * [CMake](https://cmake.org) >= 3.15.0
-  * [Conan](https://conan.io) >= 1.33.0
+  * [Conan](https://conan.io) >= 1.47.0
   * a C++17 compiler
 
 
