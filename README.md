@@ -16,7 +16,21 @@ Instead, I have added CMake and Conan support for it.
 
 ## Build
 
-Execute Conan, then CMake configure with the generated CMake Toolchain file, then CMake build and CMake install.
+Execute Conan, something like:
+
+> conan install . --build missing -pr:b default -pr:h default
+
+then CMake configure with the generated CMake Toolchain file
+
+> cmake --preset default
+
+then CMake build
+
+> cmake --build --preset release
+
+and finally, CMake install.
+
+> cmake --install .
 
 
 ## License
@@ -26,5 +40,4 @@ If some non-free file from Sauerbraten (e.g. any of the media files)
 slid through my check this is considered a bug,
 please inform me about this.
 
-All third-party dependencies which are getting pulled in by Conan during build time
-have their own respective licenses.
+All third-party dependencies which are getting pulled in by Conan during build time have their own respective licenses.
