@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.15.0 FATAL_ERROR)
 project(sauerbraten CXX)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
-
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
   message(STATUS "Build type not specified: Use Release by default.")
@@ -74,8 +71,6 @@ find_package(enet REQUIRED CONFIG)
 find_package(SDL2 REQUIRED CONFIG)
 find_package(SDL2_image REQUIRED CONFIG)
 find_package(SDL2_mixer REQUIRED CONFIG)
-
-include_directories(${enet_INCLUDE_DIRS_RELEASE})
 
 ################ Files ################
 
