@@ -9,7 +9,7 @@ sdl_mixer/2.0.4
 cmake/3.28.1
 
 [options]
-sdl2:sdl2main=False
+sdl2/*:sdl2main=False
 # sdl2_image:jpg=libjpeg
 
 [generators]
