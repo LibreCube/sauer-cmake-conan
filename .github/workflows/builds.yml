@@ -7,8 +7,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", generator: "Visual Studio 16 2019", conan_version: "1.*", zip_appendix: "win-vs2019" }
-          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", generator: "Visual Studio 17 2022", conan_version: "2.*", zip_appendix: "win-vs2022"  }
+          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", generator: "Visual Studio 16 2019", conan_version: "1.*", zip_appendix: "win64-vs2019" }
+          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", generator: "Visual Studio 17 2022", conan_version: "2.*", zip_appendix: "win64-vs2022"  }
     name: ${{ matrix.config.name }}
     steps:
       - uses: actions/checkout@v4
