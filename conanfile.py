@@ -6,6 +6,7 @@ import os
 
 class Sauerbraten(ConanFile):
     name = "sauerbraten"
+    version = "r5692"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": True, "fPIC": True}

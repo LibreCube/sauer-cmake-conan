@@ -33,7 +33,6 @@ jobs:
         run: | 
           conan profile detect
       - name: Install dependencies via Conan
-        # TODO: Fix cpack
         run: |
           conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
           echo "Conan install"
@@ -56,11 +55,22 @@ jobs:
           echo "Create package"
           echo "{ARTIFACT_FILE}={value}" >> "$GITHUB_ENV"
         shell: bash
+      - name: Get Sauerbraten version (Conan 1.x)
+        if: ${{ startsWith(matrix.config.conan_version , '1') }}
+        run: | 
+          echo "{SAUER_VERSION}={conan inspect --raw version .}" >> "$GITHUB_ENV"
+      - name: Get Sauerbraten version (Conan 2.x)
+        if: ${{ startsWith(matrix.config.conan_version , '2') }}
+        # Credits for json grep: https://unix.stackexchange.com/a/694241
+        run: | 
+          json="$(conan inspect --lockfile-partial --format json .)"
+          version="$(echo $json | grep -o '"version": "[^"]*' | grep -o '[^"]*$')"
+          echo "{SAUER_VERSION}={version}" >> "$GITHUB_ENV"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         # TODO: Fix CPack, use ${{ env.ARTIFACT_FILE }}
         with:
-          name: sauerbraten-${{ matrix.config.zip_appendix }}.zip
+          name: sauerbraten-${{ env.SAUER_VERSION }}-${{ matrix.config.zip_appendix }}.zip
           path: |
             bin/
             bin_unix
