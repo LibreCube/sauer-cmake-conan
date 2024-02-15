@@ -24,6 +24,10 @@ jobs:
           conan user
           conan --version
           cmake --version
+      - name: Set Conan 1.x specifics
+        if: ${{ startsWith(matrix.config.conan_version , '1') }}
+        run: | 
+          conan config set general.revisions_enabled=True
       - name: Create Conan 2.x profile
         if: ${{ startsWith(matrix.config.conan_version , '2') }}
         run: | 
@@ -31,7 +35,6 @@ jobs:
       - name: Install dependencies via Conan
         # TODO: Fix cpack
         run: |
-          conan config set general.revisions_enabled=True
           conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
           echo "Conan install"
           conan install . --build missing -pr:b default -pr:h default
