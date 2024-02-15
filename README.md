@@ -10,7 +10,7 @@ Instead, I have added CMake and Conan support for it.
 ## Requirements
 
   * [CMake](https://cmake.org) >= 3.19.0
-  * [Conan](https://conan.io) >= 1.63.0
+  * [Conan](https://conan.io) >= 1.63.0 < 2
   * a C++17 compiler
 
 
