@@ -90,11 +90,13 @@ src/include/*.h
 .idea/
 .vs/
 build/
+x64/
 
 # CMake/CPack/Conan
 cmake-build-*/
 CMakeCache.txt
 CMakeFiles/*
+CMakePresets.json
 cmake_install.cmake
 build.ninja
 conan.cmake

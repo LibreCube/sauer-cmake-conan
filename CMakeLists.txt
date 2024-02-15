@@ -67,57 +67,15 @@ message(STATUS "Set release mode flags (${BUILD_RELEASE_FLAGS}) (Current mode: $
 
 
 
-# --- Conan --- #
-# Download Conan
-set(CONAN_CMAKE_WRAPPER_VERSION "0.18.1")
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-    message(STATUS "Downloading conan.cmake v${CONAN_CMAKE_WRAPPER_VERSION} from https://github.com/conan-io/cmake-conan")
-    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/${CONAN_CMAKE_WRAPPER_VERSION}/conan.cmake"
-            "${CMAKE_BINARY_DIR}/conan.cmake")
-endif()
-
-# Include Conan CMake wrapper
-include(${CMAKE_BINARY_DIR}/conan.cmake)
-
-# Make sure we have a recent Conan version
-conan_check(VERSION 1.47.0 REQUIRED)
-
-# Install Bincrafters Conan repository if not already installed
-conan_add_remote(NAME bincrafters INDEX 1
-        URL https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
-
-# Temporary workaround until glib can be linked statically
-set (CONANIMPORTS
-        "bin, glib-2.0-0.dll -> ./bin"
-        "bin, glib-2.0-0.dll -> ./bin64"
-        )
-
-# conan_cmake_configure(REQUIRES fmt/6.1.2
-#                      GENERATORS cmake_find_package)
-
-conan_cmake_autodetect(settings)
-
-conan_cmake_install(PATH_OR_REFERENCE .
-                    BUILD outdated
-                    SETTINGS ${settings})
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-# Execute `conan install ...` for the packages in conanfile.txt
-# conan_cmake_run(CONANFILE conanfile.txt
-#        BASIC_SETUP # CMAKE_TARGETS
-#        IMPORTS ${CONANIMPORTS}
-        ## BUILD MISSING
-        # UPDATE
-#        )
-
+# --- Dependencies --- #
 
 find_package(ZLIB REQUIRED CONFIG)
 find_package(enet REQUIRED CONFIG)
 find_package(SDL2 REQUIRED CONFIG)
 find_package(SDL2_image REQUIRED CONFIG)
 find_package(SDL2_mixer REQUIRED CONFIG)
+
+include_directories(${enet_INCLUDE_DIRS_RELEASE})
 
 ################ Files ################
 
@@ -237,16 +195,9 @@ else()
 endif()
 
 
-# target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
-target_link_libraries(sauer_server ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER})
-target_link_libraries(sauer_master ${CONAN_LIBS} ${GOSAUR_LINKING_PLATFORM_SPECIFIC_MASTER})
-# target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS} opengl32 ws2_32 dbghelp winmm kernel32 user32)
-# target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_IMAGE::SDL2_image SDL2_MIXER::SDL2_MIXER ZLIB::ZLIB SDL2::SDL2 opengl32)
-target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_image::SDL2_image sdl2_mixer::sdl2_mixer ZLIB::ZLIB SDL2::SDL2 opengl32)
-
-    
-message(STATUS "CONAN_LIBS='${CONAN_LIBS}'")
-message(STATUS "enet_INCLUDE_DIRS_RELEASE='${enet_INCLUDE_DIRS_RELEASE}'")
+target_link_libraries(sauer_server enet::enet ZLIB::ZLIB ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER})
+target_link_libraries(sauer_master enet::enet ZLIB::ZLIB ${GOSAUR_LINKING_PLATFORM_SPECIFIC_MASTER})
+target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_image::SDL2_image-static SDL2_mixer::SDL2_mixer ZLIB::ZLIB SDL2::SDL2 ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
 
 
 ################ Install targets ################
@@ -260,35 +211,42 @@ if(WIN32)
     endif()
 endif()
 
-install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master RUNTIME DESTINATION ${GOSAUR_TARGET_DIR})
+install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master
+        RUNTIME DESTINATION ${GOSAUR_TARGET_DIR}
+        LIBRARY DESTINATION ${GOSAUR_TARGET_DIR}
+        ARCHIVE DESTINATION ${GOSAUR_TARGET_DIR}
+        )
 
-set(CPACK_PACKAGE_NAME "sauerbraten")
-set(CPACK_GENERATOR "ZIP")
+# TODO: Fix Cpack
 
-option(CREATE_PACKAGE "Enable this to use CPack" OFF)
-if(CREATE_PACKAGE)
-    message("GOOD!")
-    message("Destination ${PROJECT_SOURCE_DIR}")
-    install(DIRECTORY
-                ${CMAKE_SOURCE_DIR}/bin
-                ${CMAKE_SOURCE_DIR}/bin_unix
-                ${CMAKE_SOURCE_DIR}/bin64
-                ${CMAKE_SOURCE_DIR}/data
-                ${CMAKE_SOURCE_DIR}/src
-            DESTINATION ${CMAKE_SOURCE_DIR}/artifact)
+# set(CPACK_PACKAGE_NAME "sauerbraten")
+# set(CPACK_GENERATOR "ZIP")
+## set(CPACK_INSTALLED_DIRECTORIES "${CMAKE_SOURCE_DIR}/artifact")
 
-    install(FILES
-                ${CMAKE_SOURCE_DIR}/sauerbraten.bat
-                ${CMAKE_SOURCE_DIR}/sauerbraten_unix
-                ${CMAKE_SOURCE_DIR}/server-init.cfg
-                ${CMAKE_SOURCE_DIR}/server.bat
-                ${CMAKE_SOURCE_DIR}/CMakeLists.txt
-                ${CMAKE_SOURCE_DIR}/conanfile.txt
-                ${CMAKE_SOURCE_DIR}/.gitignore
-            DESTINATION ${CMAKE_SOURCE_DIR}/artifact)
+# option(CREATE_PACKAGE "Enable this to use CPack" OFF)
+# if(CREATE_PACKAGE)
+#     message("GOOD!")
+#     message("Destination ${PROJECT_SOURCE_DIR}")
+#     install(DIRECTORY
+#                 ${CMAKE_SOURCE_DIR}/bin
+#                 ${CMAKE_SOURCE_DIR}/bin_unix
+#                 ${CMAKE_SOURCE_DIR}/bin64
+#                 ${CMAKE_SOURCE_DIR}/data
+#                 ${CMAKE_SOURCE_DIR}/src
+#             DESTINATION ${CMAKE_SOURCE_DIR}/artifact)
 
-endif()
+#     install(FILES
+#                 ${CMAKE_SOURCE_DIR}/sauerbraten.bat
+#                 ${CMAKE_SOURCE_DIR}/sauerbraten_unix
+#                 ${CMAKE_SOURCE_DIR}/server-init.cfg
+#                 ${CMAKE_SOURCE_DIR}/server.bat
+#                 ${CMAKE_SOURCE_DIR}/CMakeLists.txt
+#                 ${CMAKE_SOURCE_DIR}/conanfile.txt
+#                 ${CMAKE_SOURCE_DIR}/.gitignore
+#             DESTINATION ${CMAKE_SOURCE_DIR}/artifact)
 
-#set(CPACK_COMPONENTS_ALL ResourcesPackages)
+# endif()
 
-include(CPack)
+# #set(CPACK_COMPONENTS_ALL ResourcesPackages)
+
+# include(CPack)

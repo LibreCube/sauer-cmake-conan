@@ -16,15 +16,15 @@ Instead, I have added CMake and Conan support for it.
 
 ## Build
 
-Execute CMake configure, CMake build and CMake install.
+Execute Conan, then CMake configure with the generated CMake Toolchain file, then CMake build and CMake install.
 
 
 ## License
 
 Like the Sauerbraten source code, all files within this repository are ZLIB licensed.
-If some non-free file from Sauerbraten (e.g. any of the media files) 
-slid through my check this is considered a bug, 
+If some non-free file from Sauerbraten (e.g. any of the media files)
+slid through my check this is considered a bug,
 please inform me about this.
 
-All third-party dependencies which are getting pulled in by Conan during build time 
+All third-party dependencies which are getting pulled in by Conan during build time
 have their own respective licenses.
