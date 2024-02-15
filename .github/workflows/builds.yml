@@ -7,8 +7,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "Windows", os: "windows-2019", generator: "Visual Studio 16 2019" }
-#          - { name: "Windows", os: "windows-2022", generator: "Visual Studio 17 2022" }
+          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", generator: "Visual Studio 16 2019", conan_version: "1.*" }
+          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", generator: "Visual Studio 17 2022", conan_version: "2.*" }
     name: ${{ matrix.config.name }}
     steps:
       - uses: actions/checkout@v4
@@ -16,15 +16,15 @@ jobs:
         with:
           python-version: "3.10"
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1
+        uses: microsoft/setup-msbuild@v2
         if: matrix.config.name == 'Windows'
       - name: Install Conan
         run: |
-          pip install conan==1.* cmake
+          pip install conan==${{ matrix.config.conan_version }} cmake
           conan user
           conan --version
           cmake --version
-      - name: Conan Install
+      - name: Install dependencies via Conan
         # TODO: Fix cpack
         run: |
           conan config set general.revisions_enabled=True
@@ -44,15 +44,23 @@ jobs:
         # TODO: Fix cpack
         run: |        
           echo "Create package"
-          git add -A .
-          git config --global user.email "dummy@example.com"
-          git config --global user.name "Fix CPack"
-          git commit -am "Workaround until CPack works"
-          git archive -o sauerbraten.zip HEAD
           echo "::set-env name=ARTIFACT_FILE::$(ls sauerbraten*.zip)"
         shell: bash
       - name: Upload artifact
         uses: actions/upload-artifact@v4
+        # 
         with:
           name: ${{ env.ARTIFACT_FILE }}
-          path: ${{ env.ARTIFACT_FILE }}
+          path: |
+            bin/
+            bin_unix
+            bin64/
+            data/
+            src/
+            sauerbraten.bat
+            sauerbraten_unix
+            server-init.cfg
+            server.bat
+            CMakeLists.txt
+            conanfile.txt
+            .gitignore
