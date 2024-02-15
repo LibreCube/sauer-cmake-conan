@@ -5,7 +5,7 @@ sdl/2.28.5
 sdl_image/2.6.3
 sdl_mixer/2.0.4
 
-[build_requires]
+[tool_requires]
 cmake/3.28.1
 
 [options]
