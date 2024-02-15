@@ -24,21 +24,29 @@ jobs:
           conan user
           conan --version
           cmake --version
-      - name: Build
+      - name: Conan Install
         # TODO: Fix cpack
         run: |
           conan config set general.revisions_enabled=True
           conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
           echo "Conan install"
           conan install . --build missing
+      - name: CMake
+        # TODO: Fix cpack
+        run: |
           echo "CMake configuration"
           cmake --preset default
           echo "CMake build"
           cmake --build --preset release
           echo "CMake install"
           cmake --install .
+      - name: Create package
+        # TODO: Fix cpack
+        run: |        
           echo "Create package"
           git add -A .
+          git config --global user.email "dummy@example.com"
+          git config --global user.name "Fix CPack"
           git commit -am "Workaround until CPack works"
           git archive -o sauerbraten.zip HEAD
           echo "::set-env name=ARTIFACT_FILE::$(ls sauerbraten*.zip)"
