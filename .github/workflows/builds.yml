@@ -7,8 +7,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", generator: "Visual Studio 16 2019", conan_version: "1.*" }
-          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", generator: "Visual Studio 17 2022", conan_version: "2.*" }
+          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", generator: "Visual Studio 16 2019", conan_version: "1.*", zip_appendix: "vs2019" }
+          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", generator: "Visual Studio 17 2022", conan_version: "2.*", zip_appendix: "vs2022"  }
     name: ${{ matrix.config.name }}
     steps:
       - uses: actions/checkout@v4
@@ -24,33 +24,40 @@ jobs:
           conan user
           conan --version
           cmake --version
+      - name: Create Conan 2.x profile
+        if: ${{ ! startsWith(matrix.config.conan_version , '2') }}
+        run: | 
+          conan profile detect
       - name: Install dependencies via Conan
         # TODO: Fix cpack
         run: |
           conan config set general.revisions_enabled=True
           conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
           echo "Conan install"
-          conan install . --build missing
+          conan install . --build missing -pr:b default -pr:h default
       - name: CMake
         # TODO: Fix cpack
         run: |
-          echo "CMake configuration"
+          echo "::group::CMake configuration"
           cmake --preset default
-          echo "CMake build"
+          echo "::endgroup::"
+          echo "::group::CMake build"
           cmake --build --preset release
-          echo "CMake install"
+          echo "::endgroup::"
+          echo "::group::CMake install"
           cmake --install .
+          echo "::endgroup::"
       - name: Create package
         # TODO: Fix cpack
         run: |        
           echo "Create package"
-          echo "::set-env name=ARTIFACT_FILE::$(ls sauerbraten*.zip)"
+          echo "{ARTIFACT_FILE}={value}" >> "$GITHUB_ENV"
         shell: bash
       - name: Upload artifact
         uses: actions/upload-artifact@v4
-        # 
+        # TODO: Fix CPack, use ${{ env.ARTIFACT_FILE }}
         with:
-          name: ${{ env.ARTIFACT_FILE }}
+          name: sauerbraten-${{ matrix.config.zip_appendix }}.zip
           path: |
             bin/
             bin_unix
