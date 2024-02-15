@@ -197,7 +197,7 @@ endif()
 
 target_link_libraries(sauer_server enet::enet ZLIB::ZLIB ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER})
 target_link_libraries(sauer_master enet::enet ZLIB::ZLIB ${GOSAUR_LINKING_PLATFORM_SPECIFIC_MASTER})
-target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_image::SDL2_image-static SDL2_mixer::SDL2_mixer ZLIB::ZLIB SDL2::SDL2 ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
+target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_image::SDL2_image SDL2_mixer::SDL2_mixer ZLIB::ZLIB SDL2::SDL2 ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
 
 
 ################ Install targets ################
