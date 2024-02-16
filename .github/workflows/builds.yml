@@ -8,16 +8,13 @@ jobs:
       matrix:
         config:
           - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", conan_version: "1.*", zip_appendix: "win64-vs2019" }
-          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", conan_version: "2.*", zip_appendix: "win64-vs2022"  }
+          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", conan_version: "2.*", zip_appendix: "win64-vs2022" }
     name: ${{ matrix.config.name }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-        if: matrix.config.name == 'Windows'
       - name: Install Conan
         run: |
           pip install conan==${{ matrix.config.conan_version }} cmake
