@@ -35,7 +35,7 @@ and finally, CMake install.
 
 ## Content Download
 
-Currently, the Sauerbraten content needs to be downloaded manually, in oder to use the executables from this project.
+Currently, the Sauerbraten content needs to be downloaded manually, in order to use the executables from this project.
 
 Please note that these instructions contain version specific links and directory names. The current version is `5692`.
 
