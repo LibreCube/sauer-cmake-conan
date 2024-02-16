@@ -33,6 +33,23 @@ and finally, CMake install.
 > cmake --install .
 
 
+## Content Download
+
+Currently, the Sauerbraten content needs to be downloaded manually, in oder to use the executables from this project.
+
+Please note that these instructions contain version specific links and directory names. The current version is `5692`.
+
+Once you have a successful build, go to the [Sauerbraten Sourceforge page](https://sourceforge.net/p/sauerbraten/code/5692/tree/) and click on `Download Snapshot`.
+
+In the root of your build directory, create a new directory path called
+
+> packages/sauerbraten/1.5692/
+
+Extract the downloaded snapshot in this newly created directory.
+
+For future updates, download the related snapshot, create a new version directory and extract the snapshot there. You might want to delete the old version directories in order to free disk space, but you can also keep it, if you plan to switch between different versions.
+
+
 ## License
 
 Like the Sauerbraten source code, all files within this repository are ZLIB licensed.
