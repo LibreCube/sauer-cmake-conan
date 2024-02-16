@@ -31,6 +31,7 @@ linux_server
 
 # Sauerbraten non-CMake build systems
 src/Makefile
+src/rgpgame/Makefile
 *.vcxproj
 *.vcxproj.*
 *.cbp
@@ -115,7 +116,8 @@ _CPack_Packages/
 artifact/
 CPackConfig.cmake
 CPackSourceConfig.cmake 
-install_manifest.txt 
+install_manifest.txt
+rpg.dir/
 sauer_master.dir/
 sauer_server.dir/
 sauerbraten.dir/

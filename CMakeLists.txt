@@ -177,6 +177,60 @@ add_executable(${CMAKE_PROJECT_NAME} ${GOSAUR_APPLICATION_TYPE}
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC CLIENT)
 
+add_executable(rpg ${GOSAUR_APPLICATION_TYPE}
+        src/shared/crypto.cpp
+        src/shared/geom.cpp
+        src/shared/glemu.cpp
+        src/shared/stream.cpp
+        src/shared/tools.cpp
+        src/shared/zip.cpp
+        src/engine/3dgui.cpp
+        src/engine/bih.cpp
+        src/engine/blend.cpp
+        src/engine/blob.cpp
+        src/engine/client.cpp
+        src/engine/command.cpp
+        src/engine/console.cpp
+        src/engine/cubeloader.cpp
+        src/engine/decal.cpp
+        src/engine/dynlight.cpp
+        src/engine/glare.cpp
+        src/engine/grass.cpp
+        src/engine/lightmap.cpp
+        src/engine/main.cpp
+        src/engine/material.cpp
+        src/engine/menus.cpp
+        src/engine/movie.cpp
+        src/engine/normal.cpp
+        src/engine/octa.cpp
+        src/engine/octaedit.cpp
+        src/engine/octarender.cpp
+        src/engine/physics.cpp
+        src/engine/pvs.cpp
+        src/engine/rendergl.cpp
+        src/engine/rendermodel.cpp
+        src/engine/renderparticles.cpp
+        src/engine/rendersky.cpp
+        src/engine/rendertext.cpp
+        src/engine/renderva.cpp
+        src/engine/server.cpp
+        src/engine/serverbrowser.cpp
+        src/engine/shader.cpp
+        src/engine/shadowmap.cpp
+        src/engine/sound.cpp
+        src/engine/texture.cpp
+        src/engine/water.cpp
+        src/engine/world.cpp
+        src/engine/worldio.cpp
+        src/rpggame/ent.cpp
+        src/rpggame/entities.cpp
+        src/rpggame/objset.cpp
+        src/rpggame/rpg.cpp
+        ${GOSAUR_ADDITIONAL_SOURCE_FILES}
+)
+
+target_compile_definitions(rpg PUBLIC CLIENT)
+
 # enet.lib;zdll.lib;opengl32.lib;SDL2.lib;SDL2_image.lib;ws2_32.lib;SDL2_mixer.lib;winmm.lib;dbghelp.lib;kernel32.lib;user32.lib
 
 
@@ -193,6 +247,7 @@ endif()
 target_link_libraries(sauer_server enet::enet ZLIB::ZLIB ${GOSAUR_LINKING_PLATFORM_SPECIFIC_SERVER})
 target_link_libraries(sauer_master enet::enet ZLIB::ZLIB ${GOSAUR_LINKING_PLATFORM_SPECIFIC_MASTER})
 target_link_libraries(${CMAKE_PROJECT_NAME} enet::enet SDL2_image::SDL2_image SDL2_mixer::SDL2_mixer ZLIB::ZLIB SDL2::SDL2 ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
+target_link_libraries(rpg enet::enet SDL2_image::SDL2_image SDL2_mixer::SDL2_mixer ZLIB::ZLIB SDL2::SDL2 ${GOSAUR_LINKING_PLATFORM_SPECIFIC_CLIENT})
 
 
 ################ Install targets ################
@@ -206,7 +261,7 @@ if(WIN32)
     endif()
 endif()
 
-install(TARGETS ${CMAKE_PROJECT_NAME} sauer_server sauer_master
+install(TARGETS ${CMAKE_PROJECT_NAME} rpg sauer_server sauer_master
         RUNTIME DESTINATION ${GOSAUR_TARGET_DIR}
         LIBRARY DESTINATION ${GOSAUR_TARGET_DIR}
         ARCHIVE DESTINATION ${GOSAUR_TARGET_DIR}
