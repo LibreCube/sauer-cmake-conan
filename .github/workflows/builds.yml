@@ -53,23 +53,10 @@ jobs:
         # TODO: Fix cpack
         run: |        
           echo "Create package"
+          version=r`cat version.txt`
+          echo $version
+          echo "SAUER_VERSION=${version}" >> "$GITHUB_ENV"
           echo "{ARTIFACT_FILE}={value}" >> "$GITHUB_ENV"
-        shell: bash
-      - name: Get Sauerbraten version (Conan 1.x)
-        if: ${{ startsWith(matrix.config.conan_version , '1') }}
-        run: | 
-          version="$(conan inspect --raw version .)"
-          echo $version
-          echo "SAUER_VERSION=${version}" >> "$GITHUB_ENV"
-        shell: bash
-      - name: Get Sauerbraten version (Conan 2.x)
-        if: ${{ startsWith(matrix.config.conan_version , '2') }}
-        # Credits for json grep: https://unix.stackexchange.com/a/694241
-        run: | 
-          json="$(conan inspect --lockfile-partial --format json .)"
-          version="$(echo $json | grep -o '"version": "[^"]*' | grep -o '[^"]*$')"
-          echo $version
-          echo "SAUER_VERSION=${version}" >> "$GITHUB_ENV"
         shell: bash
       - name: Upload artifact
         uses: actions/upload-artifact@v4
