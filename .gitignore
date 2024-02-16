@@ -31,7 +31,7 @@ linux_server
 
 # Sauerbraten non-CMake build systems
 src/Makefile
-src/rgpgame/Makefile
+src/rpggame/Makefile
 *.vcxproj
 *.vcxproj.*
 *.cbp
