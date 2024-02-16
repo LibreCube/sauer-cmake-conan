@@ -3,6 +3,8 @@ from conan.tools.cmake import CMakeDeps, CMakeToolchain
 from conan.tools.files import copy
 import os 
 
+required_conan_version = ">=1.63.0"
+
 
 class Sauerbraten(ConanFile):
     name = "sauerbraten"
