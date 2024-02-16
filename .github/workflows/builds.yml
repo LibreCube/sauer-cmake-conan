@@ -82,6 +82,7 @@ jobs:
             bin64/
             data/
             src/
+            rpg.bat
             sauerbraten.bat
             sauerbraten_unix
             server-init.cfg
