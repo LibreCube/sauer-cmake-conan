@@ -9,6 +9,7 @@ jobs:
         config:
           - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", conan_version: "1.*", zip_appendix: "win64-vs2019" }
           - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", conan_version: "2.*", zip_appendix: "win64-vs2022" }
+          - { name: "Linux GCC - Conan 1.x", os: "ubuntu-22.04", conan_version: "1.*", zip_appendix: "linux-gcc" }
     name: ${{ matrix.config.name }}
     steps:
       - uses: actions/checkout@v4
