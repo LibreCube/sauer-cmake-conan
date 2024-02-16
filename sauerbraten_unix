@@ -7,9 +7,11 @@ SAUER_DATA=.
 # SAUER_BIN should refer to the directory in which Sauerbraten executable files are placed.
 SAUER_BIN=${SAUER_DATA}/bin_unix
 
+version=`cat version.txt`
+
 # SAUER_OPTIONS contains any command line options you would like to start Sauerbraten with.
 #SAUER_OPTIONS="-f"
-SAUER_OPTIONS="-q${HOME}/.sauerbraten"
+SAUER_OPTIONS="-q${HOME}/.sauerbraten -kpackages/sauerbraten/1.%version%"
 
 # SYSTEM_NAME should be set to the name of your operating system.
 #SYSTEM_NAME=Linux
