@@ -1,5 +1,5 @@
 from conan import ConanFile
-from conan.tools.cmake import CMakeDeps, CMakeToolchain
+from conan.tools.cmake import CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy
 import os 
 
@@ -23,6 +23,9 @@ class Sauerbraten(ConanFile):
     def tool_requirements(self):
         self.requires("cmake/3.28.1")
 
+    def layout(self):
+        cmake_layout(self)
+
     def configure(self):
         self.options["enet"].shared = True
         self.options["sdl"].shared = True
@@ -45,16 +48,16 @@ class Sauerbraten(ConanFile):
             else:
                 target_dir = "bin"
 
-        target_licenses_root = os.path.join(self.build_folder, target_dir, "licenses")
+        target_licenses_root = os.path.join(self.source_folder, target_dir, "licenses")
 
         for dep in self.dependencies.values():
-            copy(self, "*.dylib", dep.cpp_info.libdirs[0], os.path.join(self.build_folder, target_dir))
-            copy(self, "*.dll", dep.cpp_info.libdirs[0], os.path.join(self.build_folder, target_dir))
-            copy(self, "*.dll", dep.cpp_info.bindirs[0], os.path.join(self.build_folder, target_dir))
+            copy(self, "*.dylib", dep.cpp_info.libdirs[0], os.path.join(self.source_folder, target_dir))
+            copy(self, "*.dll", dep.cpp_info.libdirs[0], os.path.join(self.source_folder, target_dir))
+            copy(self, "*.dll", dep.cpp_info.bindirs[0], os.path.join(self.source_folder, target_dir))
 
             target_licenses = os.path.join(target_licenses_root, dep.ref.name)
             copy(self, "*", os.path.join(dep.package_folder, "licenses"), target_licenses)
 
-        fo = open(os.path.join(self.build_folder, "version.txt"), "w")
+        fo = open(os.path.join(self.source_folder, "version.txt"), "w")
         fo.write(self.version[1:])
         fo.close()

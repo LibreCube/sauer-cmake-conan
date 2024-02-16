@@ -45,7 +45,7 @@ jobs:
           cmake --build --preset release
           echo "::endgroup::"
           echo "::group::CMake install"
-          cmake --install .
+          cmake --install build/
           echo "::endgroup::"
       - name: Create package
         # TODO: Fix cpack

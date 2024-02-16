@@ -101,6 +101,7 @@ cmake-build-*/
 CMakeCache.txt
 CMakeFiles/*
 CMakePresets.json
+CMakeUserPresets.json
 cmake_install.cmake
 build.ninja
 conan.cmake

@@ -30,7 +30,7 @@ then CMake build
 
 and finally, CMake install.
 
-> cmake --install .
+> cmake --install build/
 
 
 ## Content Download
