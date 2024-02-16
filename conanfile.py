@@ -52,3 +52,7 @@ class Sauerbraten(ConanFile):
 
             target_licenses = os.path.join(target_licenses_root, dep.ref.name)
             copy(self, "*", os.path.join(dep.package_folder, "licenses"), target_licenses)
+
+        fo = open(os.path.join(self.build_folder, "version.txt"), "w")
+        fo.write(self.version[1:])
+        fo.close()

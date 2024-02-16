@@ -51,6 +51,9 @@ src/enet/check_cflags.sh
 
 src/include/*.h
 
+# This project specific files that are auto-generated at build time
+version.txt
+
 
 ## Generic .gitignore stuff
 
