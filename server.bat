@@ -9,4 +9,6 @@ IF /I "%PROCESSOR_ARCHITEW6432%" == "amd64" (
     set SAUER_BIN=bin64
 )
 
-start %SAUER_BIN%\sauerbraten.exe "-q$HOME\My Games\GoSauer" -gserver-log.txt -d %*
+set /p version=<version.txt
+
+start %SAUER_BIN%\sauerbraten.exe "-q$HOME\My Games\GoSauer" -gserver-log.txt "-kpackages/sauerbraten/1.%version%" -d %*
