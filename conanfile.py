@@ -15,13 +15,13 @@ class Sauerbraten(ConanFile):
 
     def requirements(self):
         self.requires("enet/1.3.17")
-        self.requires("sdl/2.28.5")
-        self.requires("sdl_image/2.6.3")
-        self.requires("sdl_mixer/2.0.4")
+        self.requires("sdl/[>=2.28 <3]")
+        self.requires("sdl_image/[>=2.6 <3]")
+        self.requires("sdl_mixer/[>=2.0 <3]")
         self.requires("zlib/1.3")
 
     def tool_requirements(self):
-        self.requires("cmake/3.28.1")
+        self.requires("cmake/[>=3.28 <3]")
 
     def layout(self):
         cmake_layout(self)
