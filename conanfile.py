@@ -19,7 +19,11 @@ class Sauerbraten(ConanFile):
         self.requires("sdl_image/[>=2.6 <3]", force=True)
         self.requires("sdl_mixer/[>=2.0 <3]", force=True)
         self.requires("zlib/[>=1.2.13 <1.4]", force=True)
+
         self.requires("openssl/[>=1.1 <4]", override=True)
+        self.requires("flac/[>=1.3 <2]", override=True)
+        self.requires("opus/[>=1.3 <2]", override=True)
+        self.requires("mpg123/[>=1.29 <2]", override=True)
 
     def tool_requirements(self):
         self.requires("cmake/[>=3.28 <3]")
