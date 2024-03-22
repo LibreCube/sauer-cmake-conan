@@ -40,7 +40,7 @@ jobs:
         # TODO: Fix cpack
         run: |
           echo "::group::CMake configuration"
-          cmake --preset default
+          cmake --preset release
           echo "::endgroup::"
           echo "::group::CMake build"
           cmake --build --preset release
