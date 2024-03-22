@@ -27,10 +27,12 @@ jobs:
         if: ${{ startsWith(matrix.config.conan_version , '1') }}
         run: | 
           conan config set general.revisions_enabled=True
+          conan config set tools.system.package_manager:mode=install
       - name: Create Conan 2.x profile
         if: ${{ startsWith(matrix.config.conan_version , '2') }}
         run: | 
           conan profile detect
+          conan config set tools.system.package_manager:mode=install
       - name: Install dependencies via Conan
         run: |
           conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
