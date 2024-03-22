@@ -24,6 +24,7 @@ class Sauerbraten(ConanFile):
         self.requires("flac/[>=1.3 <2]", override=True)
         self.requires("opus/[>=1.3 <2]", override=True)
         self.requires("mpg123/[>=1.29 <2]", override=True)
+        self.requires("xz_utils/[>=5.4 <6]", override=True)
 
     def tool_requirements(self):
         self.requires("cmake/[>=3.28 <3]")
