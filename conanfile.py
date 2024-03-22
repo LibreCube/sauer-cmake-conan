@@ -57,9 +57,11 @@ class Sauerbraten(ConanFile):
         target_licenses_root = os.path.join(self.source_folder, target_dir, "licenses")
 
         for dep in self.dependencies.values():
-            copy(self, "*.dylib", dep.cpp_info.libdirs[0], os.path.join(self.source_folder, target_dir))
-            copy(self, "*.dll", dep.cpp_info.libdirs[0], os.path.join(self.source_folder, target_dir))
-            copy(self, "*.dll", dep.cpp_info.bindirs[0], os.path.join(self.source_folder, target_dir))
+            for libdir in dep.cpp_info.libdirs:
+                copy(self, "*.dylib", libdir, os.path.join(self.source_folder, target_dir))
+                copy(self, "*.dll", libdir, os.path.join(self.source_folder, target_dir))
+            for bindir in dep.cpp_info.bindirs:
+                copy(self, "*.dll", bindir, os.path.join(self.source_folder, target_dir))
 
             target_licenses = os.path.join(target_licenses_root, dep.ref.name)
             copy(self, "*", os.path.join(dep.package_folder, "licenses"), target_licenses)
