@@ -21,12 +21,12 @@ jobs:
       - name: Install Conan
         run: |
           pip install conan==${{ matrix.config.conan_version }} cmake
-          conan user
           conan --version
           cmake --version
       - name: Set Conan 1.x specifics
         if: ${{ startsWith(matrix.config.conan_version , '1') }}
-        run: | 
+        run: |
+          conan user
           conan config set general.revisions_enabled=True
       - name: Create Conan 2.x profile
         if: ${{ startsWith(matrix.config.conan_version , '2') }}
