@@ -8,9 +8,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", conan_version: "1.*", zip_appendix: "win64-vs2019" }
-          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", conan_version: "2.*", zip_appendix: "win64-vs2022" }
-          - { name: "Linux GCC - Conan 1.x", os: "ubuntu-22.04", conan_version: "1.*", zip_appendix: "linux-gcc" }
+          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", conan_version: "1.*", preset_configure_target: "default", zip_appendix: "win64-vs2019" }
+          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", conan_version: "2.*", preset_configure_target: "conan-default", zip_appendix: "win64-vs2022" }
+          - { name: "Linux GCC - Conan 1.x", os: "ubuntu-22.04", conan_version: "1.*", preset_configure_target: "release", zip_appendix: "linux-gcc" }
     name: ${{ matrix.config.name }}
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
         # TODO: Fix cpack
         run: |
           echo "::group::CMake configuration"
-          cmake --preset release
+          cmake --preset ${{ matrix.config.preset_configure_target }}
           echo "::endgroup::"
           echo "::group::CMake build"
           cmake --build --preset release
