@@ -8,9 +8,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", conan_version: "1.*", preset_configure_target: "default", zip_appendix: "win64-vs2019" }
-          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", conan_version: "2.*", preset_configure_target: "conan-default", zip_appendix: "win64-vs2022" }
-          - { name: "Linux GCC - Conan 1.x", os: "ubuntu-22.04", conan_version: "1.*", preset_configure_target: "release", zip_appendix: "linux-gcc" }
+          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", conan_version: "1.*", preset_configure: "default", preset_build: "release", zip_appendix: "win64-vs2019" }
+          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", conan_version: "2.*", preset_configure: "conan-default", preset_build: "conan-release", zip_appendix: "win64-vs2022" }
+          - { name: "Linux GCC - Conan 1.x", os: "ubuntu-22.04", conan_version: "1.*", preset_configure: "release", preset_build: "release", zip_appendix: "linux-gcc" }
     name: ${{ matrix.config.name }}
     steps:
       - uses: actions/checkout@v4
@@ -40,10 +40,10 @@ jobs:
         # TODO: Fix cpack
         run: |
           echo "::group::CMake configuration"
-          cmake --preset ${{ matrix.config.preset_configure_target }}
+          cmake --preset ${{ matrix.config.preset_configure }}
           echo "::endgroup::"
           echo "::group::CMake build"
-          cmake --build --preset release
+          cmake --build --preset ${{ matrix.config.preset_build }}
           echo "::endgroup::"
           echo "::group::CMake install"
           cmake --install build/
