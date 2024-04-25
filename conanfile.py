@@ -14,7 +14,7 @@ class Sauerbraten(ConanFile):
     default_options = {"shared": True, "fPIC": True}
 
     def requirements(self):
-        self.requires("enet/1.3.17")
+        self.requires("enet/1.3.18")
         self.requires("sdl/[>=2.28 <3]", force=True)
         self.requires("sdl_image/[>=2.6 <3]", force=True)
         self.requires("sdl_mixer/[>=2.0 <3]", force=True)
