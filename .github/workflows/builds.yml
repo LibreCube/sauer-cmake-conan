@@ -60,6 +60,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         # TODO: Fix CPack, use ${{ env.ARTIFACT_FILE }}
+        # Use then archive: false to upload zip directly to avoid double-zipping
         with:
           name: sauerbraten-${{ env.SAUER_VERSION }}-${{ matrix.config.zip_appendix }}.zip
           path: |
