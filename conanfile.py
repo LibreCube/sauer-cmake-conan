@@ -27,7 +27,7 @@ class Sauerbraten(ConanFile):
         self.requires("xz_utils/[>=5.4 <6]", override=True)
 
     def tool_requirements(self):
-        self.requires("cmake/[>=3.28 <3]")
+        self.requires("cmake/[>=3.28 <4]")
 
     def layout(self):
         cmake_layout(self)
