@@ -8,16 +8,16 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2019", conan_version: "1.*", preset_configure: "default", preset_build: "release", zip_appendix: "win64-vs2019-conan1" }
-          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2022", conan_version: "2.*", preset_configure: "conan-default", preset_build: "conan-release", zip_appendix: "win64-vs2022-conan2" }
+          - { name: "Windows VS 16 - Conan 1.x", os: "windows-2022", conan_version: "1.*", preset_configure: "default", preset_build: "release", zip_appendix: "win64-vs2019-conan1" }
+          - { name: "Windows VS 17 - Conan 2.x", os: "windows-2025", conan_version: "2.*", preset_configure: "conan-default", preset_build: "conan-release", zip_appendix: "win64-vs2022-conan2" }
           - { name: "Linux GCC - Conan 1.x", os: "ubuntu-22.04", conan_version: "1.*", preset_configure: "release", preset_build: "release", zip_appendix: "linux-gcc-conan1" }
-          - { name: "Linux GCC - Conan 2.x", os: "ubuntu-22.04", conan_version: "2.*", preset_configure: "conan-release", preset_build: "conan-release", zip_appendix: "linux-gcc-conan2" }
+          - { name: "Linux GCC - Conan 2.x", os: "ubuntu-24.04", conan_version: "2.*", preset_configure: "conan-release", preset_build: "conan-release", zip_appendix: "linux-gcc-conan2" }
     name: ${{ matrix.config.name }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - name: Install Conan
         run: |
           pip install conan==${{ matrix.config.conan_version }} cmake
@@ -58,7 +58,7 @@ jobs:
           echo "{ARTIFACT_FILE}={value}" >> "$GITHUB_ENV"
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         # TODO: Fix CPack, use ${{ env.ARTIFACT_FILE }}
         with:
           name: sauerbraten-${{ env.SAUER_VERSION }}-${{ matrix.config.zip_appendix }}.zip
