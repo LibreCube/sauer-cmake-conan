@@ -100,7 +100,6 @@ x64/
 cmake-build-*/
 CMakeCache.txt
 CMakeFiles/*
-CMakePresets.json
 CMakeUserPresets.json
 cmake_install.cmake
 build.ninja
@@ -126,5 +125,5 @@ x64/Debug/
 *.exp
 *.zip
 
-# IDEs
+# IDEs specific files
 CMakeSettings.json
